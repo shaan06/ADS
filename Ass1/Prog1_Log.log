@@ -1,0 +1,14 @@
+2018-02-14 17:32:11,148 - Problem1 - INFO - Valid CIK and Accession_no provided
+2018-02-14 17:32:11,148 - Problem1 - INFO - -index.html URL created
+2018-02-14 17:32:11,148 - Problem1 - INFO - URL for the 10-q file for CIK = 51143 and Accession_no = 000005114313000007 is created
+2018-02-14 17:32:26,717 - Problem1 - INFO - Relevant tables were appended
+2018-02-14 17:33:54,004 - Problem1 - INFO - Valid CIK and Accession_no provided
+2018-02-14 17:33:54,004 - Problem1 - INFO - -index.html URL created
+2018-02-14 17:33:54,004 - Problem1 - INFO - URL for the 10-q file for CIK = 51143 and Accession_no = 000005114313000007 is created
+2018-02-14 17:34:04,216 - Problem1 - INFO - Relevant tables were appended
+2018-02-14 17:35:18,867 - Problem1 - INFO - Valid CIK and Accession_no provided
+2018-02-14 17:35:18,867 - Problem1 - INFO - -index.html URL created
+2018-02-14 17:35:18,867 - Problem1 - INFO - URL for the 10-q file for CIK = 51143 and Accession_no = 000005114313000007 is created
+2018-02-14 17:35:37,781 - Problem1 - INFO - Relevant tables were appended
+2018-02-14 17:35:38,330 - Problem1 - INFO - CSV files for the tables were generated
+2018-02-14 17:35:38,362 - Problem1 - INFO - CSV files and the Log file were zipped in a single folder
