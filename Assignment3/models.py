@@ -33,9 +33,8 @@ import boto3
 import boto.s3
 from boto.s3.key import Key 
 import wget
-import urllib 
+import urllib
 from urllib import *
-#import urllib2
 
 #AWS_ACCESS_KEY_ID = input("AWS_ACCESS_KEY_ID=")
 #AWS_SECRET_ACCESS_KEY = input("AWS_SECRET_ACCESS_KEY=")
@@ -67,7 +66,7 @@ def check_missing_values(dataset):
 
 def replacing_missing_values(dataset):
 	data = check_missing_values(dataset)
-	print("yo")
+	print("Replacing missing value")
 	if(data == False):
 	    new_data = pd.DataFrame()
 	    dataset['limit_bal'].dropna(inplace = True)
@@ -82,7 +81,8 @@ def replacing_missing_values(dataset):
 
 def feature_engineering(dataset):
     dataset = replacing_missing_values(dataset)
-    print("yo1")
+    print("Feature Engineering")
+    #print("yo1")
     dataset.rename(columns={'PAY_0':'PAY_1','default payment next month':'next_month_payment'},inplace=True)
     dataset.columns = map(str.lower, dataset.columns)
     filedu = (dataset.education == 5)|(dataset.education == 6)|(dataset.education == 0)
@@ -107,7 +107,7 @@ def feature_engineering(dataset):
 
 def split_dataset(dataset):
     data = feature_engineering(dataset)
-    print("yo2")
+    print("Spliting dataset")
     X = data[['id', 'limit_bal', 'sex', 'education', 'marriage', 'age', 'pay_1',
        'pay_2', 'pay_3', 'pay_4', 'pay_5', 'pay_6', 'bill_amt1', 'bill_amt2',
        'bill_amt3', 'bill_amt4', 'bill_amt5', 'bill_amt6', 'pay_amt1',
@@ -118,20 +118,21 @@ def split_dataset(dataset):
 
 def sampling(dataset):
     X,y  = split_dataset(dataset)
-    print("yo3")
+    print("Oversampling")
     sm = SMOTE(random_state=12, ratio = 1.0)
     x_res, y_res = sm.fit_sample(X, y)
     return x_res,y_res
 
 def train_test(dataset):
     x_res, y_res = sampling(dataset)
-    print("yo4")
+    print("Taining and testing")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test_split(x_res,
                                                     y_res,
                                                     test_size = .2,
                                                     random_state=12)
     return x_train_res, x_val_res, y_train_res, y_val_res
 def random_forest(dataset):
+    print("Random forest pickling")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
     rf = RandomForestClassifier(n_estimators=40, max_depth=10)
     rf.fit(x_train_res, y_train_res)
@@ -146,6 +147,7 @@ def random_forest(dataset):
     return RandomForest_model   
 
 def k_n(dataset):
+    print("KNN pickling")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
 # instantiate learning model (k = 3)
     knn = KNeighborsClassifier(n_neighbors=4)
@@ -163,6 +165,7 @@ def k_n(dataset):
 
 
 def logReg(dataset):
+    print("Log Regression pickling")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
 # instantiate learning model (k = 3)
     lr = LogisticRegression()
@@ -180,6 +183,7 @@ def logReg(dataset):
 
 
 def BernouNb(dataset):
+    print("Bernoulli pickling")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
 # instantiate learning model (k = 3)
     bnb = BernoulliNB()
@@ -197,6 +201,8 @@ def BernouNb(dataset):
 
 
 def ex_tr(dataset):
+    print("Extra Tree Classifier")
+
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
 # instantiate learning model (k = 3)
     extr = ExtraTreesClassifier(n_estimators = 50, random_state = 123)
@@ -215,6 +221,7 @@ def ex_tr(dataset):
 
 
 def models(dataset):
+    print("Models")
     randomForest_model = random_forest(dataset)
     K_nearest_model = k_n(dataset)
     Log_Reg_model = logReg(dataset)
@@ -244,6 +251,7 @@ def models(dataset):
 
 
 def fit_model(model, dataset):
+    print("Metrics evaluating")
     x_train_res, x_val_res, y_train_res, y_val_res = train_test(dataset)
     print("yo5")
     #model.fit(x_train_res,y_train_res)
@@ -259,6 +267,7 @@ def fit_model(model, dataset):
     return f1score,accuracy,tp,fp,fn,tn
 
 def accuracyscore(dataset):
+	print("Returning scores")
 #    models = []
 #    #here = os.path.dirname(os.path.abspath(__file__))
 #    with open(os.path.join("models.pckl"), 'rb') as filename:
@@ -293,6 +302,7 @@ def accuracyscore(dataset):
 
 def performance_metrics(dataset):
     #models()
+    print("Ranking of the models")
     summary2 = accuracyscore(dataset)
     print("yo7")
     describe1 = pd.DataFrame(summary2[0],columns = {"Model_Name"})
