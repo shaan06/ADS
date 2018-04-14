@@ -9,7 +9,6 @@ from boto.s3.connection import S3Connection
 from sklearn.linear_model import LogisticRegression
 from boto.s3.key import Key
 import glob
-import config as cg
 import zipfile
 from zipfile import ZipFile
 import pickle
@@ -23,10 +22,13 @@ from imblearn.metrics import classification_report_imbalanced
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report
 from sklearn.cross_validation import train_test_split
 app = Flask(__name__) 
+S3_KEY = ""
+S3_SECRET_ACCESS_KEY = ""
+S3_BUCKET = "assignment3adsteam8"
 s3 = boto3.client(
    "s3",
-   aws_access_key_id=cg.S3_KEY,
-   aws_secret_access_key=cg.S3_SECRET_ACCESS_KEY
+   aws_access_key_id=S3_KEY,
+   aws_secret_access_key=S3_SECRET_ACCESS_KEY
 )
 def upload_file_to_s3(file, bucket_name, acl="public-read"):
 
@@ -90,8 +92,8 @@ def fill_form():
 @app.route('/prediction_form/' , methods=["POST"])
 def prediction_form():
     if request.method == "POST":
-        conn = S3Connection(cg.S3_KEY, cg.S3_SECRET_ACCESS_KEY)
-        b = conn.get_bucket(cg.S3_BUCKET)
+        conn = S3Connection(S3_KEY, S3_SECRET_ACCESS_KEY)
+        b = conn.get_bucket(S3_BUCKET)
         for obj in b.get_all_keys():
             trial = obj.get_contents_to_filename(obj.key)
         Id = request.form.get("id")
@@ -188,12 +190,12 @@ def restAPI_calls():
         file.save(file_path)
         try:
 
-	        output = upload_file_to_s3(file, cg.S3_BUCKET)
+	        output = upload_file_to_s3(file, S3_BUCKET)
 	        print(output)
 	        dataset = pd.read_csv(file_path,header = 1)
 	        print(dataset)
-        	conn = S3Connection(cg.S3_KEY, cg.S3_SECRET_ACCESS_KEY)
-        	b = conn.get_bucket(cg.S3_BUCKET)
+        	conn = S3Connection(S3_KEY, S3_SECRET_ACCESS_KEY)
+        	b = conn.get_bucket(S3_BUCKET)
         	for obj in b.get_all_keys():
         		trial = obj.get_contents_to_filename(obj.key) 
         except Exception as e:
