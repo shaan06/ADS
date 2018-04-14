@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, json, send_file
+import sys
 from werkzeug.utils import secure_filename
 import pandas as pd
 import numpy as np
@@ -22,8 +23,8 @@ from imblearn.metrics import classification_report_imbalanced
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report
 from sklearn.cross_validation import train_test_split
 app = Flask(__name__) 
-S3_KEY = ""
-S3_SECRET_ACCESS_KEY = ""
+S3_KEY = str(sys.argv[1])
+S3_SECRET_ACCESS_KEY = str(sys.argv[2])
 S3_BUCKET = "assignment3adsteam8"
 s3 = boto3.client(
    "s3",
@@ -38,7 +39,7 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         s3.upload_fileobj(
             file,
             bucket_name,
-            file.filename,
+            file.filename0,
             ExtraArgs={
                 "ACL": acl,
                 "ContentType": file.content_type
